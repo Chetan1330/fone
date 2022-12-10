@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Profile {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- [ Main Content ] start -->
+    <div class="container-fluid page__container">
+		
+		
+		<section class="section transprant-bg pclear secPadding">
+			<div class="container no-view" data-animation-effect="fadeIn">
+				
+				<div class="space"></div>
+				
+				
+				<div class="row">
+					<div class="space"></div>
+					<div class="col-md-3 col-sm-3"></div>
+					<div class="col-md-6 col-sm-6">
+						
+						<div class="panel panel-primary">
+							
+							<div class="panel-body">
+
+								
+            
+									<div class="card">
+										<div class="card-header text-center">
+											<h4 class="card-title mb-0">Add Course details</h4>
+											
+										</div>
+										
+										<div class="card-body">
+											
+											<!-- {% for exam in course.course_list %}
+											<h6 class="card-title mb-0"><a href="/exam_preview/{{exam.course_slug}}" style="text-decoration:none;" >{{exam.course_name}}</a></h6>
+											{% endfor %}<br> -->
+											
+											<!-- <div class="row" > 
+												<div class="col col-md-12" align="center">
+													<h3 style="color:#006ce7;">Exam Question</h3>
+												</div>
+											</div> -->
+											<div class="space"></div>
+											<form method="POST" action="" enctype="multipart/form-data">
+												<div class="row" > 
+													{% csrf_token %}
+
+													<small class="col-md-12">Course Name:</small><br>
+													
+													<div class="col-md-12" style="color:#006ce7;">
+														<input class="col-md-12" type="text" name="coursename" placeholder="Enter Course name" required>
+													</div>
+													
+
+													<div style="margin-top: 5px;" class="col-md-12"></div>
+													<small class="col-md-12">Intoduction:</small><br>
+													<div class="col-md-9" id="editor">
+														<p>Hello World!</p>
+														<p>Some initial <strong>bold</strong> text</p>
+														<p><br></p>
+													</div>
+
+													<div style="margin-top: 5px;" class="col-md-12"></div>
+
+													<small class="col-md-12">Topics:</small><br>
+													<div class="col-md-9" id="editor1">
+														<p>Hello World!</p>
+														<p>Some initial <strong>bold</strong> text</p>
+														<p><br></p>
+													</div>
+
+													<div style="margin-top: 5px;" class="col-md-12"></div>
+
+													<small class="col-md-12">Date & time:</small><br>
+													<div class="col-md-9" id="editor2">
+														<p>Exam Time: 60 mins | Publish Date: 3 Apr 2021</p>
+														
+														<p><br></p>
+													</div>
+
+													<div style="margin-top: 5px;" class="col-md-12"></div>
+
+													<div style="margin-top: 10px;" class="col-md-12"></div>
+													<div class=" col-md-5" style="color:#006ce7;">
+														<b>Exam pass score:  </b>
+													</div>
+													<div class="col-md-5" style="color:#006ce7;">
+														<input type="number" name="pass_score" required>
+													</div>
+
+													<div style="margin-top: 5px;" class="col-md-12"></div>
+
+													<div style="margin-top: 10px;" class="col-md-12"></div>
+													<div class=" col-md-5" style="color:#006ce7;">
+														<b>keywords:  </b>
+													</div>
+													
+													<div class="col-md-6" style="color:#006ce7;">
+														<input type="text" name="keyword" required>
+													</div>
+
+													<div style="margin-top: 10px;" class="col-md-12"></div>
+													<div class=" col-md-5" style="color:#006ce7;">
+														<b>Question File (PDF) :  </b>
+													</div>
+												<div class="col-md-5" style="color:#006ce7;">
+													{{form.pdf_file}}
+												</div>
+												<div class="col-md-5">
+													<!-- {{form.category_id}} -->
+													{{form.valves}}
+												</div>
+												</div>
+												
+												<div class="space"></div>
+												<div class="space"></div>
+												<div class="row">
+													<div class="col col-md-12" align="center">
+												<button onclick="editor()" type="submit" class="btn btn-primary">Submit</button> 
+											</form>
+											
+										</div>
+									</div>
+								   
+									
+								
+
+								
+                    
+                            </div>
+                        </div>
+                            
+						<div class="space"></div>
+							
+						
+					</div>					
+				</div>
+				
+			</div>			  
+		</section>
+    </div>
+    <!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="/static/assets/js/quill.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+<script>
+	if (document.getElementById('editor')) {
+      var quill = new Quill('#editor', {
+        theme: 'snow' // Specify theme in configuration
+      });
+    }
+
+	if (document.getElementById('editor1')) {
+      var quill1 = new Quill('#editor1', {
+        theme: 'snow' // Specify theme in configuration
+      });
+    }
+
+	if (document.getElementById('editor2')) {
+      var quill2 = new Quill('#editor2', {
+        theme: 'snow' // Specify theme in configuration
+      });
+    }
+
+
+	function editor(){
+      console.log("Hello")
+      console.log(quill.getText())
+      
+      $.ajax({
+        type: "POST",
+        url: "{% url 'editor' %}",
+        data: {
+          'etxt': quill.getText(), // from form
+          'etxt1': quill1.getText(),
+		  'etxt2': quill2.getText(),
+        },
+        success: function (response) {
+          console.log("Success:",response)
+        }
+      });
+    }
+</script>
+
+{% endblock javascripts %}

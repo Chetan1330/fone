@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Profile {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- [ Main Content ] start -->
+    <div class="container-fluid page__container">
+		<section class="section transprant-bg pclear secPadding">
+			<div class="container no-view" data-animation-effect="fadeIn">
+				
+				<div class="space"></div>
+				
+				
+				<div class="row">
+					<div class="space"></div>
+					<div class="col-md-3 col-sm-3"></div>
+					<div class="col-md-6 col-sm-6">
+						
+						<div class="panel panel-primary">
+							
+							<div class="panel-body">
+								
+                                <div class="row" > 
+                                    <div class="col col-md-12" align="center">
+                                        <h2 style="color:#006ce7;"> Exam Question</h2>
+                                    </div>
+                                </div>
+                                <div class="space"></div>
+                                <form method="POST" action="" enctype="multipart/form-data">
+                                <div class="row" > 
+                                
+                                    {% csrf_token %}
+                                    <div class="col col-md-5" align="center" style="color:#006ce7;">
+                                        <b>Question File (PDF) :  </b>
+                                    </div>
+								<div class="col col-md-5" style="color:#006ce7;">
+                                         {{form.pdf_file}}
+								</div>
+                               
+
+						  
+
+								<!-- <input type="file" name="qbank_pdf" /> -->
+                           
+
+								</div>
+								<!-- <div class="row"  style="margin-top:30px;"> 
+									<div class="col col-md-4"  align="right" style="color:#006ce7;margin-left:20px;">
+										<b>Category : </b>
+						   			</div>
+									<div class="col col-md-4"  style="color:#006ce7;margin-left:25px;">
+										{{form.category_id}}
+						   			</div>
+                                </div>   -->
+                                    
+                                
+								<!--<div class="col-md-12 ">
+								</div>
+								 <div class="col-lg-6">
+								 
+								<button type="submit" class="btn btn-primary">Update Company Information</button>
+								 </div> -->
+                                 <div class="space"></div>
+                                 <div class="space"></div>
+								<div class="row">
+                                    <div class="col col-md-12" align="center">
+								<button type="submit" class="btn btn-primary">Submit</button> 
+                            </form>
+                            </div>
+                                </div>
+                            
+							</div> 
+							<div class="space"></div>
+
+
+							
+							
+								
+							</div>
+							
+						</div>
+					</div>					
+				</div>
+				
+			</div>			  
+		</section>
+    </div>
+    <!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+{% endblock javascripts %}

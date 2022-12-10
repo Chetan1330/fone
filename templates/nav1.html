@@ -1,0 +1,866 @@
+{% load static %}
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,500;1,400&display=swap');
+
+nav ul li {
+  margin-left: 1px;
+  margin-right: 1px;
+}
+
+  li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+.header{
+    border-bottom: 1px solid #E2E8F0;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* padding: 1rem 1rem; */
+}
+
+
+.hamburger {
+    display: none;
+}
+
+.bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    background-color: #101010;
+}
+
+.nav-menu {
+  height: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-item {
+    margin-left: 2px;
+}
+
+/* .navbar-brand{
+    margin-left: -310px;
+} */
+
+.nav-link{
+    font-size: 17px;
+    font-weight: 400;
+    color: #ffffff;
+}
+
+.nav-link:hover{
+    color: #c3c2c8;
+}
+
+.nav-link:active{
+    color: #c3c2c8;
+}
+
+
+#svg1 {
+ visibility: hidden;
+}
+
+#svgname1 {
+ visibility: hidden;
+}
+
+@media only screen and (max-width: 768px) {
+    .nav-menu {
+        position: fixed;
+        left: -100%;
+        top: 5rem;
+        flex-direction: column;
+        background-color: rgb(45, 122, 186);
+        width: 100%;
+        height: 350px;
+        border-radius: 10px;
+        text-align: center;
+        transition: 0.3s;
+        box-shadow:
+            0 10px 27px rgba(0, 0, 0, 0.05);
+    }
+
+    .nav-menu.active {
+        left: 0;
+    }
+    .navbar-brand{
+      visibility: hidden;
+    }
+
+    #svg1 {
+      visibility: visible;
+      margin-left: -220px;
+    }
+
+    #svgname1 {
+      visibility: visible;
+      margin-left: -330px;
+      color: #ffffff;
+    }
+
+    #svg2 {
+      visibility: hidden;
+    }
+
+    #svgname2 {
+      visibility: hidden;
+    }
+
+    #svg3 {
+      visibility: hidden;
+    }
+
+    #svgname3 {
+      visibility: hidden;
+    }
+
+    .nav-item {
+        margin: 10px 0;
+    }
+
+    .hamburger {
+        display: block;
+        cursor: pointer;
+    }
+
+}
+
+.hamburger.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active .bar:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+
+    .hamburger.active .bar:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+    .nav__item {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+}
+
+.nav__item__link {
+  margin-left: -35px;
+  position: relative;
+  display: block;
+  color: #d9d9d9;
+  padding: 20px;
+  z-index: 2;
+  text-decoration: none;
+  font-size: 16px;
+  background-color: #2d2c41;
+  transition: background-color 250ms ease;
+
+  &:hover,
+  &:focus {
+    background-color: #4b4a5e;
+    color: #FFF;
+  }
+}
+
+.nav__item__drop {
+  position: absolute;
+  left: -50;
+  top: 100%;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(-20px);
+  height: 1px;
+  min-width: 100%;
+  transition: transform .2s ease-in-out, opacity .1s ease-out;
+  overflow: hidden;
+  z-index: 1;
+  background-color: #ffffff;
+  border: 1px solid rgb(255, 255, 255);
+  border-radius: 5px;
+  border-top: 0;
+  
+  .nav__item__link {
+    padding: 1px 0px;
+    white-space: nowrap;
+  }
+}
+
+.nav__item__link:focus + .nav__item__drop,
+.nav__item:hover .nav__item__drop,
+.nav__item__drop:focus-within {
+  opacity: 1;
+  transform: translateY(0px);
+  height: auto;
+  z-index: 1;
+}
+
+</style>
+
+<header class="mdk-header js-mdk-header mb-0 header">
+  <nav class="navbar navbar-dark bg-primary">
+      {% if request.user.is_authenticated %}
+        <button class="navbar-toggler d-block" data-toggle="sidebar" type="button">
+          <span class="material-icons">menu</span>
+        </button>
+      {% endif %}
+
+      <svg id="svg1" style="margin-right: 8px;" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32">
+            <defs>
+                <path id="white-a"
+                    d="M2.248384,11.6596904 C2.16610196,11.7078568 2.09899681,11.7801998 2.05530153,11.8678438 C1.93134583,12.1164739 2.02277821,12.4235599 2.25952146,12.5537394 L15.2317878,19.6868832 C15.3729801,19.7645216 15.5415215,19.7641617 15.6824122,19.6859211 L26.3424666,13.7660843 C26.5515556,13.6499711 26.7844939,13.589274 27.0210148,13.589274 C27.8227077,13.589274 28.4726082,14.2718062 28.4726082,15.1137522 L28.4726082,22.4920654 C28.4726082,22.7727141 28.6892417,23.0002248 28.9564726,23.0002248 L29.5161355,23.0002248 C29.7833665,23.0002248 30,22.7727141 30,22.4920654 L30,12.7288658 C30,12.5444947 29.9049107,12.3745872 29.7515292,12.2848931 L15.6940892,4.06441149 C15.5476733,3.97879067 15.3694966,3.97883171 15.2231164,4.06451998 L2.248384,11.6596904 Z M1.74675365,10.7759708 L14.7493745,3.19258619 C15.1894589,2.93592028 15.7251379,2.93579734 16.1653299,3.19226123 L30.2529855,11.3999866 C30.714119,11.6686514 31,12.177583 31,12.729838 L31,22.4778874 C31,23.318527 30.3487026,24 29.5452865,24 L28.9844207,24 C28.1810046,24 27.5297072,23.318527 27.5297072,22.4778874 L27.5297072,15.1110236 C27.5297072,14.8308104 27.3126081,14.6036527 27.0448027,14.6036527 C26.9657929,14.6036527 26.8879799,14.6238537 26.8181338,14.662498 L16.1351662,20.5731487 C15.7115858,20.8075064 15.2048749,20.8085842 14.7803873,20.5760306 L1.78023787,13.4539557 C1.0684815,13.0640231 0.793594775,12.1441948 1.16626118,11.3994617 C1.29762879,11.1369379 1.49937697,10.9202457 1.74675365,10.7759708 Z M6,19.4941038 L6,22.6757884 C6,22.8554924 6.09293002,23.0210222 6.24266544,23.1080316 L14.5550134,27.9382326 C14.6937984,28.0188788 14.8619403,28.0206565 15.0022435,27.9429609 L23.7490006,23.0992751 C23.903379,23.0137851 24,22.8455751 24,22.6623036 L24,19.4941038 C24,19.2212693 23.7893735,19.0000933 23.5295525,19.0000933 C23.4507787,19.0000933 23.3732658,19.0208646 23.3041246,19.0605019 L15.6762839,23.4333903 C15.2547889,23.6750249 14.7452111,23.6750249 14.3237161,23.4333903 L6.69587542,19.0605019 C6.46782591,18.9297657 6.18202773,19.0179133 6.05752731,19.257385 C6.01978062,19.3299893 6,19.4113844 6,19.4941038 Z M5,19.4855217 C5,19.2368261 5.05969468,18.9921117 5.17360804,18.7738272 C5.54933001,18.0538561 6.41182232,17.7888408 7.10003855,18.1818989 L14.7732317,22.5642576 C14.9145654,22.6449769 15.0854346,22.6449769 15.2267683,22.5642576 L22.8999615,18.1818989 C23.1086185,18.0627295 23.3425395,18.0002804 23.5802663,18.0002804 C24.3643636,18.0002804 25,18.6652456 25,19.4855217 L25,22.6605829 C25,23.2115879 24.7084137,23.7173109 24.2425248,23.9743364 L15.4437625,28.8285121 C15.0203504,29.0621037 14.5129255,29.0567592 14.094095,28.8142965 L5.73232472,23.9736347 C5.28044765,23.7120413 5,23.2143764 5,22.6740969 L5,19.4855217 Z" />
+            </defs>
+            <use fill="#FFF" fill-rule="evenodd" xlink:href="#white-a" />
+      </svg>
+
+      <span id="svgname1" class="d-none d-xs-md-block">Explorerg</span>
+
+      {% if request.user.is_authenticated %}
+      <a href="/" style="margin-left: -1010px;" class="navbar-brand">
+        <svg id="svg2" style="margin-right: 8px;" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32">
+            <defs>
+                <path id="white-a"
+                    d="M2.248384,11.6596904 C2.16610196,11.7078568 2.09899681,11.7801998 2.05530153,11.8678438 C1.93134583,12.1164739 2.02277821,12.4235599 2.25952146,12.5537394 L15.2317878,19.6868832 C15.3729801,19.7645216 15.5415215,19.7641617 15.6824122,19.6859211 L26.3424666,13.7660843 C26.5515556,13.6499711 26.7844939,13.589274 27.0210148,13.589274 C27.8227077,13.589274 28.4726082,14.2718062 28.4726082,15.1137522 L28.4726082,22.4920654 C28.4726082,22.7727141 28.6892417,23.0002248 28.9564726,23.0002248 L29.5161355,23.0002248 C29.7833665,23.0002248 30,22.7727141 30,22.4920654 L30,12.7288658 C30,12.5444947 29.9049107,12.3745872 29.7515292,12.2848931 L15.6940892,4.06441149 C15.5476733,3.97879067 15.3694966,3.97883171 15.2231164,4.06451998 L2.248384,11.6596904 Z M1.74675365,10.7759708 L14.7493745,3.19258619 C15.1894589,2.93592028 15.7251379,2.93579734 16.1653299,3.19226123 L30.2529855,11.3999866 C30.714119,11.6686514 31,12.177583 31,12.729838 L31,22.4778874 C31,23.318527 30.3487026,24 29.5452865,24 L28.9844207,24 C28.1810046,24 27.5297072,23.318527 27.5297072,22.4778874 L27.5297072,15.1110236 C27.5297072,14.8308104 27.3126081,14.6036527 27.0448027,14.6036527 C26.9657929,14.6036527 26.8879799,14.6238537 26.8181338,14.662498 L16.1351662,20.5731487 C15.7115858,20.8075064 15.2048749,20.8085842 14.7803873,20.5760306 L1.78023787,13.4539557 C1.0684815,13.0640231 0.793594775,12.1441948 1.16626118,11.3994617 C1.29762879,11.1369379 1.49937697,10.9202457 1.74675365,10.7759708 Z M6,19.4941038 L6,22.6757884 C6,22.8554924 6.09293002,23.0210222 6.24266544,23.1080316 L14.5550134,27.9382326 C14.6937984,28.0188788 14.8619403,28.0206565 15.0022435,27.9429609 L23.7490006,23.0992751 C23.903379,23.0137851 24,22.8455751 24,22.6623036 L24,19.4941038 C24,19.2212693 23.7893735,19.0000933 23.5295525,19.0000933 C23.4507787,19.0000933 23.3732658,19.0208646 23.3041246,19.0605019 L15.6762839,23.4333903 C15.2547889,23.6750249 14.7452111,23.6750249 14.3237161,23.4333903 L6.69587542,19.0605019 C6.46782591,18.9297657 6.18202773,19.0179133 6.05752731,19.257385 C6.01978062,19.3299893 6,19.4113844 6,19.4941038 Z M5,19.4855217 C5,19.2368261 5.05969468,18.9921117 5.17360804,18.7738272 C5.54933001,18.0538561 6.41182232,17.7888408 7.10003855,18.1818989 L14.7732317,22.5642576 C14.9145654,22.6449769 15.0854346,22.6449769 15.2267683,22.5642576 L22.8999615,18.1818989 C23.1086185,18.0627295 23.3425395,18.0002804 23.5802663,18.0002804 C24.3643636,18.0002804 25,18.6652456 25,19.4855217 L25,22.6605829 C25,23.2115879 24.7084137,23.7173109 24.2425248,23.9743364 L15.4437625,28.8285121 C15.0203504,29.0621037 14.5129255,29.0567592 14.094095,28.8142965 L5.73232472,23.9736347 C5.28044765,23.7120413 5,23.2143764 5,22.6740969 L5,19.4855217 Z" />
+            </defs>
+            <use fill="#FFF" fill-rule="evenodd" xlink:href="#white-a" />
+        </svg>
+
+        <span id="svgname2" class="d-none d-xs-md-block">Explorerg</span>
+      </a>
+        <a href="#" class="nav-logo"></a>
+        
+          <ul style="margin-top: 10px;" class="nav-menu">
+
+            <li class="nav-item {% if 'index' in segment %} active {% endif %}">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item {% if 'courses.html' in segment %} active {% endif %}">
+                <a class="nav-link" href="/courses">Courses</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/aboutus">About Us</a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="/contactus">Contact Us</a>
+            </li>
+            <li class="nav-item ">
+              
+            </li>
+
+            <li class="nav__item">
+              <!-- <a href="#" class="nav__item__link">Item1</a> -->
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"><img
+                src="{{base_url}}{{image}}" alt="Profile" class="rounded-circle"
+                width="40"></a>
+              <ul style="margin-left: -20px;" class="nav__item__drop">
+                <li>
+                  <a style="color: #69696a;" class="nav__item__link dropdown-item" href="/profile/">
+                    <i class="material-icons">person</i> Profile
+                </a>
+                </li>
+                <li>
+                  <a style="color: #69696a;" class="nav__item__link dropdown-item" href="/logout">
+                    <i class="material-icons">lock</i> Logout
+                </a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"><img
+                        src="{{base_url}}{{image}}" alt="Profile" class="rounded-circle"
+                        width="40"></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    
+                    <a class="dropdown-item" href="/profile/">
+                        <i class="material-icons">person</i> Profile
+                    </a>
+                    
+                    <a onclick="logout()" class="dropdown-item" href="/logout">
+                        <i class="material-icons">lock</i> Logout
+                    </a>
+                </div>
+            </li> -->
+          </ul>
+          <!-- <ul class="nav-menu">
+              <li class="nav-item {% if 'index' in segment %} active {% endif %}">
+                  <a href="/" class="nav-link">Home</a>
+              </li>
+              <li class="nav-item {% if 'courses.html' in segment %} active {% endif %}">
+                  <a href="/courses" class="nav-link">Courses</a>
+              </li>
+              <li class="nav-item">
+                  <a href="/aboutus" class="nav-link">About Us</a>
+              </li>
+              <li class="nav-item">
+                  <a href="/contactus" class="nav-link">Contact Us</a>
+              </li>
+          </ul> -->
+        {% else %}
+        <a href="/" style="margin-left: -700px;" class="navbar-brand">
+          <svg id="svg3" style="margin-right: 8px;" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32">
+              <defs>
+                  <path id="white-a"
+                      d="M2.248384,11.6596904 C2.16610196,11.7078568 2.09899681,11.7801998 2.05530153,11.8678438 C1.93134583,12.1164739 2.02277821,12.4235599 2.25952146,12.5537394 L15.2317878,19.6868832 C15.3729801,19.7645216 15.5415215,19.7641617 15.6824122,19.6859211 L26.3424666,13.7660843 C26.5515556,13.6499711 26.7844939,13.589274 27.0210148,13.589274 C27.8227077,13.589274 28.4726082,14.2718062 28.4726082,15.1137522 L28.4726082,22.4920654 C28.4726082,22.7727141 28.6892417,23.0002248 28.9564726,23.0002248 L29.5161355,23.0002248 C29.7833665,23.0002248 30,22.7727141 30,22.4920654 L30,12.7288658 C30,12.5444947 29.9049107,12.3745872 29.7515292,12.2848931 L15.6940892,4.06441149 C15.5476733,3.97879067 15.3694966,3.97883171 15.2231164,4.06451998 L2.248384,11.6596904 Z M1.74675365,10.7759708 L14.7493745,3.19258619 C15.1894589,2.93592028 15.7251379,2.93579734 16.1653299,3.19226123 L30.2529855,11.3999866 C30.714119,11.6686514 31,12.177583 31,12.729838 L31,22.4778874 C31,23.318527 30.3487026,24 29.5452865,24 L28.9844207,24 C28.1810046,24 27.5297072,23.318527 27.5297072,22.4778874 L27.5297072,15.1110236 C27.5297072,14.8308104 27.3126081,14.6036527 27.0448027,14.6036527 C26.9657929,14.6036527 26.8879799,14.6238537 26.8181338,14.662498 L16.1351662,20.5731487 C15.7115858,20.8075064 15.2048749,20.8085842 14.7803873,20.5760306 L1.78023787,13.4539557 C1.0684815,13.0640231 0.793594775,12.1441948 1.16626118,11.3994617 C1.29762879,11.1369379 1.49937697,10.9202457 1.74675365,10.7759708 Z M6,19.4941038 L6,22.6757884 C6,22.8554924 6.09293002,23.0210222 6.24266544,23.1080316 L14.5550134,27.9382326 C14.6937984,28.0188788 14.8619403,28.0206565 15.0022435,27.9429609 L23.7490006,23.0992751 C23.903379,23.0137851 24,22.8455751 24,22.6623036 L24,19.4941038 C24,19.2212693 23.7893735,19.0000933 23.5295525,19.0000933 C23.4507787,19.0000933 23.3732658,19.0208646 23.3041246,19.0605019 L15.6762839,23.4333903 C15.2547889,23.6750249 14.7452111,23.6750249 14.3237161,23.4333903 L6.69587542,19.0605019 C6.46782591,18.9297657 6.18202773,19.0179133 6.05752731,19.257385 C6.01978062,19.3299893 6,19.4113844 6,19.4941038 Z M5,19.4855217 C5,19.2368261 5.05969468,18.9921117 5.17360804,18.7738272 C5.54933001,18.0538561 6.41182232,17.7888408 7.10003855,18.1818989 L14.7732317,22.5642576 C14.9145654,22.6449769 15.0854346,22.6449769 15.2267683,22.5642576 L22.8999615,18.1818989 C23.1086185,18.0627295 23.3425395,18.0002804 23.5802663,18.0002804 C24.3643636,18.0002804 25,18.6652456 25,19.4855217 L25,22.6605829 C25,23.2115879 24.7084137,23.7173109 24.2425248,23.9743364 L15.4437625,28.8285121 C15.0203504,29.0621037 14.5129255,29.0567592 14.094095,28.8142965 L5.73232472,23.9736347 C5.28044765,23.7120413 5,23.2143764 5,22.6740969 L5,19.4855217 Z" />
+              </defs>
+              <use fill="#FFF" fill-rule="evenodd" xlink:href="#white-a" />
+          </svg>
+  
+          <span id="svgname3" class="d-none d-xs-md-block">Explorerg</span>
+        </a>
+          <a href="#" class="nav-logo"></a>
+
+          <ul style="margin-top: 10px;" class="nav-menu">
+            <li class="nav-item {% if 'index' in segment %} active {% endif %}">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item {% if 'courses.html' in segment %} active {% endif %}">
+                <a class="nav-link" href="/courses">Courses</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/aboutus">About Us</a>
+            </li>
+            <li class="nav-item {% if 'login' in segment %} active {% endif %}">
+                <a class="nav-link" href="/login/">Login</a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="/contactus">Contact Us</a>
+            </li>
+          </ul>
+        {% endif %}
+
+        <!-- {% if request.user.is_authenticated %}
+
+                <ul class="nav-menu">
+
+                    <li class="nav-item {% if 'index' in segment %} active {% endif %} ml-md-4">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item {% if 'courses.html' in segment %} active {% endif %}">
+                        <a class="nav-link" href="/courses">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/aboutus">About Us</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="/contactus">Contact Us</a>
+                    </li>
+
+                    <li class="nav-item dropdown ml-1 ml-md-5">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"><img
+                                src="{{base_url}}{{image}}" alt="Profile" class="rounded-circle"
+                                width="40"></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            
+                            <a class="dropdown-item" href="/profile/">
+                                <i class="material-icons">person</i> Profile
+                            </a>
+                            
+                            <a onclick="logout()" class="dropdown-item" href="/logout">
+                                <i class="material-icons">lock</i> Logout
+                            </a>
+                        </div>
+                    </li>
+                    
+                </ul>
+               
+                {% else %}
+                   
+                    <ul class="nav navbar-nav flex-nowrap d-none d-lg-flex">
+                        <li class="nav-item {% if 'index' in segment %} active {% endif %}">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item {% if 'courses.html' in segment %} active {% endif %}">
+                            <a class="nav-link" href="/courses">Courses</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/aboutus">About Us</a>
+                        </li>
+                        <li class="nav-item {% if 'login' in segment %} active {% endif %}">
+                            <a class="nav-link" href="/login/">Login</a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="/contactus">Contact Us</a>
+                        </li>
+                    </ul>
+                {% endif %} -->
+
+        <div class="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+    
+  </nav>
+</header>
+
+
+<!-- <header class="cd-main-header js-cd-main-header">
+    <div class="cd-logo-wrapper">
+      <a href="#0" class="cd-logo"><img src="assets/img/cd-logo.svg" alt="Logo"></a>
+    </div>
+  
+    <button class="reset cd-nav-trigger js-cd-nav-trigger" aria-label="Toggle menu"><span></span></button>
+  
+    <ul class="cd-nav__list js-cd-nav__list">
+      <li class="cd-nav__item"><a href="#0">Home</a></li>
+      <li class="cd-nav__item"><a href="#0">Courses</a></li>
+      
+      <li class="cd-nav__item cd-nav__item--has-children cd-nav__item--account js-cd-item--has-children">
+        <a href="#0">
+          <img src="assets/img/cd-avatar.svg" alt="avatar">
+          <span>Account</span>
+        </a>
+    
+        <ul class="cd-nav__sub-list">
+          <li class="cd-nav__sub-item"><a href="#0">My Account</a></li>
+          <li class="cd-nav__sub-item"><a href="#0">Edit Account</a></li>
+          <li class="cd-nav__sub-item"><a href="#0">Logout</a></li>
+        </ul>
+      </li>
+    </ul>
+  </header> -->
+<!-- <style>
+    
+   
+   .navbar-default {
+     background-color: #FFF;
+     margin-left: 200px;
+   }
+   
+   /*main side bar*/
+   .msb {
+     width: 200px;
+     background-color: #F5F7F9;
+     position: fixed;
+     left: 0;
+     top: 0;
+     right: auto;
+     min-height: 100%;
+     overflow-y: auto;
+     white-space: nowrap;
+     height: 100%;
+     z-index: 1;
+     border-right: 1px solid #ddd;
+   }
+   .msb .navbar {
+     border: none;
+     margin-left: 0;
+     background-color: inherit;
+   }
+   .msb .navbar-header {
+     width: 100%;
+     border-bottom: 1px solid #e7e7e7;
+     margin-bottom: 20px;
+     background: #fff;
+   }
+   .msb .navbar-nav .panel {
+     border: 0 none;
+     box-shadow: none;
+     margin: 0;
+     background: inherit;
+   }
+   .msb .navbar-nav li {
+     display: block;
+     width: 100%;
+   }
+   .msb .navbar-nav li a {
+     padding: 15px;
+     color: #5f5f5f;
+   }
+   .msb .navbar-nav li a .glyphicon, .msb .navbar-nav li a .fa {
+     margin-right: 8px;
+   }
+   .msb .nb {
+     padding-top: 5px;
+     padding-left: 10px;
+     margin-bottom: 30px;
+     overflow: hidden;
+   }
+   
+   ul.nv,
+   ul.ns {
+     position: relative;
+     padding: 0;
+     list-style: none;
+   }
+   
+   .nv {
+     /*ns: nav-sub*/
+   }
+   .nv li {
+     display: block;
+     position: relative;
+   }
+   .nv li::before {
+     clear: both;
+     content: "";
+     display: table;
+   }
+   .nv li a {
+     color: #444;
+     padding: 10px 25px;
+     display: block;
+     vertical-align: middle;
+   }
+   .nv li a .ic {
+     font-size: 16px;
+     margin-right: 5px;
+     font-weight: 300;
+     display: inline-block;
+   }
+   .nv .ns li a {
+     padding: 10px 50px;
+   }
+   
+   /*main content wrapper*/
+   .mcw {
+     margin-left: 200px;
+     position: relative;
+     min-height: 100%;
+     /*content view*/
+   }
+   /*globals*/
+   a,
+   a:focus,
+   a:hover {
+     text-decoration: none;
+   }
+   
+   .inbox .container-fluid {
+     padding-left: 0;
+     padding-right: 0;
+   }
+   .inbox ul, .inbox li {
+     margin: 0;
+     padding: 0;
+   }
+   .inbox ul li {
+     list-style: none;
+   }
+   .inbox ul li a {
+     display: block;
+     padding: 10px 20px;
+   }
+   
+   .msb, .mnb {
+     -moz-animation: slidein 300ms forwards;
+     -o-animation: slidein 300ms forwards;
+     -webkit-animation: slidein 300ms forwards;
+     animation: slidein 300ms forwards;
+     -webkit-transform-style: preserve-3d;
+     transform-style: preserve-3d;
+   }
+   
+   .mcw {
+     -moz-animation: bodyslidein 300ms forwards;
+     -o-animation: bodyslidein 300ms forwards;
+     -webkit-animation: bodyslidein 300ms forwards;
+     animation: bodyslidein 300ms forwards;
+     -webkit-transform-style: preserve-3d;
+     transform-style: preserve-3d;
+   }
+   
+   body.msb-x .mcw, body.msb-x .mnb {
+     margin-left: 0;
+     -moz-animation: bodyslideout 300ms forwards;
+     -o-animation: bodyslideout 300ms forwards;
+     -webkit-animation: bodyslideout 300ms forwards;
+     animation: bodyslideout 300ms forwards;
+     -webkit-transform-style: preserve-3d;
+     transform-style: preserve-3d;
+   }
+   body.msb-x .msb {
+     -moz-animation: slideout 300ms forwards;
+     -o-animation: slideout 300ms forwards;
+     -webkit-animation: slideout 300ms forwards;
+     animation: slideout 300ms forwards;
+     -webkit-transform-style: preserve-3d;
+     transform-style: preserve-3d;
+   }
+   
+   /* Slide in animation */
+   @-moz-keyframes slidein {
+     0% {
+       left: -200px;
+     }
+     100% {
+       left: 0;
+     }
+   }
+   @-webkit-keyframes slidein {
+     0% {
+       left: -200px;
+     }
+     100% {
+       left: 0;
+     }
+   }
+   @keyframes slidein {
+     0% {
+       left: -200px;
+     }
+     100% {
+       left: 0;
+     }
+   }
+   @-moz-keyframes slideout {
+     0% {
+       left: 0;
+     }
+     100% {
+       left: -200px;
+     }
+   }
+   @-webkit-keyframes slideout {
+     0% {
+       left: 0;
+     }
+     100% {
+       left: -200px;
+     }
+   }
+   @keyframes slideout {
+     0% {
+       left: 0;
+     }
+     100% {
+       left: -200px;
+     }
+   }
+   @-moz-keyframes bodyslidein {
+     0% {
+       left: 0;
+     }
+     100% {
+       margin-left: 200px;
+     }
+   }
+   @-webkit-keyframes bodyslidein {
+     0% {
+       left: 0;
+     }
+     100% {
+       left: 0;
+     }
+   }
+   @keyframes bodyslidein {
+     0% {
+       margin-left: 0;
+     }
+     100% {
+       margin-left: 200px;
+     }
+   }
+   @-moz-keyframes bodyslideout {
+     0% {
+       margin-left: 200px;
+     }
+     100% {
+       margin-right: 0;
+     }
+   }
+   @-webkit-keyframes bodyslideout {
+     0% {
+       margin-left: 200px;
+     }
+     100% {
+       margin-left: 0;
+     }
+   }
+   @keyframes bodyslideout {
+     0% {
+       margin-left: 200px;
+     }
+     100% {
+       margin-left: 0;
+     }
+   }
+   
+</style>
+<nav class="mnb navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <i class="ic fa fa-bars"></i>
+        </button>
+        <div style="padding: 5px 0;">
+           <a href="#" id="msbo"><i class="ic fa fa-bars"></i></a>
+        </div>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/courses">En</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Draude Oba <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/login/">Settings</a></li>
+              <li><a href="#">Upgrade</a></li>
+              <li><a href="#">Help</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </li>
+          <li><a href="#"><i class="fa fa-bell-o"></i></a></li>
+          <li><a href="#"><i class="fa fa-comment-o"></i></a></li>
+        </ul>
+        <form class="navbar-form navbar-right">
+          <input type="text" class="form-control" placeholder="Search...">
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script>
+            
+    (function () {
+      $("#msbo").on("click", function () {
+        $("body").toggleClass("msb-x");
+      });
+    })();
+
+    
+</script> -->
+
+<!-- <div id="header" data-fixed class="mdk-header js-mdk-header mb-0">
+    <div class="mdk-header__content">
+
+        <nav id="default-navbar" class="navbar navbar-expand navbar-dark bg-primary m-0">
+            <div class="container-fluid">
+                {% if request.user.is_authenticated %}
+                <button class="navbar-toggler d-block" data-toggle="sidebar" type="button">
+                    <span class="material-icons">menu</span>
+                </button>
+                {% endif %}
+                <a href="/" class="navbar-brand">
+                    <svg style="margin-right: 8px;" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32">
+                        <defs>
+                            <path id="white-a"
+                                d="M2.248384,11.6596904 C2.16610196,11.7078568 2.09899681,11.7801998 2.05530153,11.8678438 C1.93134583,12.1164739 2.02277821,12.4235599 2.25952146,12.5537394 L15.2317878,19.6868832 C15.3729801,19.7645216 15.5415215,19.7641617 15.6824122,19.6859211 L26.3424666,13.7660843 C26.5515556,13.6499711 26.7844939,13.589274 27.0210148,13.589274 C27.8227077,13.589274 28.4726082,14.2718062 28.4726082,15.1137522 L28.4726082,22.4920654 C28.4726082,22.7727141 28.6892417,23.0002248 28.9564726,23.0002248 L29.5161355,23.0002248 C29.7833665,23.0002248 30,22.7727141 30,22.4920654 L30,12.7288658 C30,12.5444947 29.9049107,12.3745872 29.7515292,12.2848931 L15.6940892,4.06441149 C15.5476733,3.97879067 15.3694966,3.97883171 15.2231164,4.06451998 L2.248384,11.6596904 Z M1.74675365,10.7759708 L14.7493745,3.19258619 C15.1894589,2.93592028 15.7251379,2.93579734 16.1653299,3.19226123 L30.2529855,11.3999866 C30.714119,11.6686514 31,12.177583 31,12.729838 L31,22.4778874 C31,23.318527 30.3487026,24 29.5452865,24 L28.9844207,24 C28.1810046,24 27.5297072,23.318527 27.5297072,22.4778874 L27.5297072,15.1110236 C27.5297072,14.8308104 27.3126081,14.6036527 27.0448027,14.6036527 C26.9657929,14.6036527 26.8879799,14.6238537 26.8181338,14.662498 L16.1351662,20.5731487 C15.7115858,20.8075064 15.2048749,20.8085842 14.7803873,20.5760306 L1.78023787,13.4539557 C1.0684815,13.0640231 0.793594775,12.1441948 1.16626118,11.3994617 C1.29762879,11.1369379 1.49937697,10.9202457 1.74675365,10.7759708 Z M6,19.4941038 L6,22.6757884 C6,22.8554924 6.09293002,23.0210222 6.24266544,23.1080316 L14.5550134,27.9382326 C14.6937984,28.0188788 14.8619403,28.0206565 15.0022435,27.9429609 L23.7490006,23.0992751 C23.903379,23.0137851 24,22.8455751 24,22.6623036 L24,19.4941038 C24,19.2212693 23.7893735,19.0000933 23.5295525,19.0000933 C23.4507787,19.0000933 23.3732658,19.0208646 23.3041246,19.0605019 L15.6762839,23.4333903 C15.2547889,23.6750249 14.7452111,23.6750249 14.3237161,23.4333903 L6.69587542,19.0605019 C6.46782591,18.9297657 6.18202773,19.0179133 6.05752731,19.257385 C6.01978062,19.3299893 6,19.4113844 6,19.4941038 Z M5,19.4855217 C5,19.2368261 5.05969468,18.9921117 5.17360804,18.7738272 C5.54933001,18.0538561 6.41182232,17.7888408 7.10003855,18.1818989 L14.7732317,22.5642576 C14.9145654,22.6449769 15.0854346,22.6449769 15.2267683,22.5642576 L22.8999615,18.1818989 C23.1086185,18.0627295 23.3425395,18.0002804 23.5802663,18.0002804 C24.3643636,18.0002804 25,18.6652456 25,19.4855217 L25,22.6605829 C25,23.2115879 24.7084137,23.7173109 24.2425248,23.9743364 L15.4437625,28.8285121 C15.0203504,29.0621037 14.5129255,29.0567592 14.094095,28.8142965 L5.73232472,23.9736347 C5.28044765,23.7120413 5,23.2143764 5,22.6740969 L5,19.4855217 Z" />
+                        </defs>
+                        <use fill="#FFF" fill-rule="evenodd" xlink:href="#white-a" />
+                    </svg>
+
+                    <span class="d-none d-xs-md-block">Explorerg</span>
+                </a>
+
+                <form class="search-form d-none d-md-flex">
+                    <input type="text" class="form-control" placeholder="Search">
+                    <button class="btn" type="button"><i class="material-icons font-size-24pt">search</i></button>
+                </form>
+
+                <div class="flex"></div>
+
+                
+
+                {% if request.user.is_authenticated %}
+
+                <ul class="nav navbar-nav flex-nowrap col-md-4">
+
+                    <li class="nav-item {% if 'index' in segment %} active {% endif %} ml-md-4">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item {% if 'courses.html' in segment %} active {% endif %}">
+                        <a class="nav-link" href="/courses">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/aboutus">About Us</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="/contactus">Contact Us</a>
+                    </li>
+
+                    <li class="nav-item dropdown ml-1 ml-md-5">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"><img
+                                src="{{base_url}}{{image}}" alt="Profile" class="rounded-circle"
+                                width="40"></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            
+                            <a class="dropdown-item" href="/profile/">
+                                <i class="material-icons">person</i> Profile
+                            </a>
+                            
+                            <a onclick="logout()" class="dropdown-item" href="/logout">
+                                <i class="material-icons">lock</i> Logout
+                            </a>
+                        </div>
+                    </li>
+                    
+                </ul>
+               
+                {% else %}
+                   
+                    <ul class="nav navbar-nav flex-nowrap d-none d-lg-flex">
+                        <li class="nav-item {% if 'index' in segment %} active {% endif %}">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item {% if 'courses.html' in segment %} active {% endif %}">
+                            <a class="nav-link" href="/courses">Courses</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/aboutus">About Us</a>
+                        </li>
+                        <li class="nav-item {% if 'login' in segment %} active {% endif %}">
+                            <a class="nav-link" href="/login/">Login</a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="/contactus">Contact Us</a>
+                        </li>
+                    </ul>
+                {% endif %}
+                <div class="hamburger">
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+              </div>
+            </div>
+        </nav>
+        
+
+    </div>
+</div> -->
+
+
+<script>
+  const hamburger = document.querySelector(".hamburger");
+  const navMenu = document.querySelector(".nav-menu");
+
+  hamburger.addEventListener("click", mobileMenu);
+
+  function mobileMenu() {
+      hamburger.classList.toggle("active");
+      navMenu.classList.toggle("active");
+  }
+
+  const navLink = document.querySelectorAll(".nav-link");
+
+navLink.forEach(n => n.addEventListener("click", closeMenu));
+
+function closeMenu() {
+hamburger.classList.remove("active");
+navMenu.classList.remove("active");
+}
+
+</script>
